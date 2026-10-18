@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Inan Sikandar ❤️</title>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Hind Siliguri', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Floating Hearts Background */
+        .heart-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .heart-bg i {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.7);
+            animation: animate 8s linear infinite;
+            bottom: -100px;
+        }
+
+        @keyframes animate {
+            0% {
+                transform: translateY(0) rotate(0deg) scale(0.8);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-105vh) rotate(360deg) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        /* Sound Button */
+        .sound-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #ff3366;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 100;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .sound-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* Main Glassmorphism Card */
+        .card {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(12px);
+            padding: 35px 25px;
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(255, 51, 102, 0.25);
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+            z-index: 10;
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            animation: fadeIn 1.2s ease-in-out;
+            margin: 20px 0;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .main-heart {
+            font-size: 75px;
+            color: #ff3366;
+            animation: pulse 1.2s infinite;
+            margin-bottom: 10px;
+            display: inline-block;
+            filter: drop-shadow(0 5px 10px rgba(255, 51, 102, 0.4));
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.18); }
+            100% { transform: scale(1); }
+        }
+
+        .name-tag {
+            font-family: 'Dancing Script', cursive;
+            font-size: 38px;
+            color: #ff2a5f;
+            margin-bottom: 5px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #4a4a4a;
+            font-size: 20px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        p.typing-text {
+            color: #555;
+            font-size: 17px;
+            line-height: 1.6;
+            min-height: 85px;
+            margin-bottom: 25px;
+        }
+
+        /* Interactive Buttons */
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            position: relative;
+            min-height: 55px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 12px 32px;
+            font-size: 18px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .btn-yes {
+            background: linear-gradient(45deg, #ff3366, #ff6b81);
+            color: white;
+        }
+
+        .btn-yes:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 25px rgba(255, 51, 102, 0.5);
+        }
+
+        .btn-no {
+            background: #e0e0e0;
+            color: #555;
+            position: absolute;
+            transition: all 0.2s ease;
+        }
+
+        /* Success Modal Popup */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(6px);
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 35px 25px;
+            border-radius: 25px;
+            text-align: center;
+            max-width: 400px;
+            width: 85%;
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); }
+            100% { transform: scale(1); }
+        }
+
+        .modal-content h2 {
+            color: #ff3366;
+            margin-bottom: 12px;
+            font-size: 24px;
+        }
+
+        .modal-content p {
+            color: #555;
+            font-size: 17px;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .celebrate-icon {
+            font-size: 65px;
+            color: #ff3366;
+            margin-bottom: 15px;
+            animation: bounce 1s infinite alternate;
+        }
+
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Direct High Quality "I Love You" Audio -->
+    <audio id="loveAudio" preload="auto">
+        <source src="https://assets.mixkit.co/active_storage/sfx/2874/2874-preview.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Sound Play Button -->
+    <button class="sound-btn" onclick="playLoveSound()" title="Play Sound">
+        <i class="fa-solid fa-volume-high"></i>
+    </button>
+
+    <!-- Floating Hearts Background -->
+    <div class="heart-bg" id="heartContainer"></div>
+
+    <!-- Main Card -->
+    <div class="card">
+        <i class="fa-solid fa-heart main-heart"></i>
+        <div class="name-tag">Inan Sikandar ❤️</div>
+        <h2>আমার জীবনের সবচেয়ে সুন্দর মানুষটি...</h2>
+        
+        <p class="typing-text" id="typewriter"></p>
+        
+        <div class="btn-group">
+            <button class="btn btn-yes" onclick="showLove()">হ্যাঁ ❤️</button>
+            <button class="btn btn-no" id="noBtn" onmouseover="moveButton()" onclick="moveButton()">না 🙈</button>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal" id="loveModal">
+        <div class="modal-content">
+            <i class="fa-solid fa-heart-circle-check celebrate-icon"></i>
+            <h2>I Love You, Inan! 🥰</h2>
+            <p>আমি জানতাম তুমি 'হ্যাঁ' বলবে! তুমি আমার জীবনের সবচেয়ে মিষ্টি আর সুন্দর উপহার। আজ থেকে আমাদের পথচলা শুরু! 💖✨</p>
+            <button class="btn btn-yes" style="padding: 8px 25px; font-size: 16px;" onclick="closeModal()">ধন্যবাদ ❤️</button>
+        </div>
+    </div>
+
+    <script>
+        // Floating Hearts Background Generator
+        function createHearts() {
+            const container = document.getElementById('heartContainer');
+            for (let i = 0; i < 30; i++) {
+                const heart = document.createElement('i');
+                heart.classList.add('fa-solid', 'fa-heart');
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = Math.random() * 4 + 4 + 's';
+                heart.style.fontSize = Math.random() * 22 + 12 + 'px';
+                container.appendChild(heart);
+            }
+        }
+        createHearts();
+
+        // Personalized Typewriter Effect
+        const message = "Inan, তুমি কি আমার হাসির কারণ হবে? তোমার হাতটা ধরে জীবনের বাকি পথগুলো ভালোবাসায় সাজিয়ে তুলতে চাই। Will you be mine forever?";
+        let index = 0;
+        function typeWriter() {
+            if (index < message.length) {
+                document.getElementById("typewriter").innerHTML += message.charAt(index);
+                index++;
+                setTimeout(typeWriter, 55);
+            }
+        }
+        window.onload = typeWriter;
+
+        // Play Clean Audio Sound
+        function playLoveSound() {
+            const audio = document.getElementById("loveAudio");
+            audio.currentTime = 0;
+            audio.play().catch(error => console.log("Audio playback error:", error));
+        }
+
+        // Move "No" Button Away
+        function moveButton() {
+            const noBtn = document.getElementById('noBtn');
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 80);
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - 80);
+            
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = Math.max(20, x) + 'px';
+            noBtn.style.top = Math.max(20, y) + 'px';
+        }
+
+        // Show Modal and Play Sound on "Yes"
+        function showLove() {
+            document.getElementById('loveModal').style.display = 'flex';
+            playLoveSound();
+        }
+
+        function closeModal() {
+            document.getElementById('loveModal').style.display = 'none';
+        }
+    </script>
+</body>
+  </html>
