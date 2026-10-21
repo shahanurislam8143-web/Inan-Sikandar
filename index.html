@@ -1,334 +1,747 @@
+```html
 <!DOCTYPE html>
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For Inan Sikandar ❤️</title>
-    <!-- FontAwesome Icons -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Inan Sikandar - My Eternal Love</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
-    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Great+Vibes&family=Poppins:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <!-- Three.js for 3D visual enhancements -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'love-pink': '#ff4b72',
+                        'love-deep': '#880e4f',
+                        'love-purple': '#2d0b32',
+                        'love-gold': '#ffd700',
+                    },
+                    fontFamily: {
+                        bangla: ['"Hind Siliguri"', 'sans-serif'],
+                        cursive: ['"Great Vibes"', 'cursive'],
+                        poppins: ['"Poppins"', 'sans-serif'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float-gentle': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+                            '50%': { transform: 'translateY(-15px) rotate(3deg)' },
+                        },
+                        glow: {
+                            '0%': { boxShadow: '0 0 15px rgba(255, 75, 114, 0.4)' },
+                            '100%': { boxShadow: '0 0 35px rgba(255, 75, 114, 0.9), 0 0 15px rgba(255, 215, 0, 0.6)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
         * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Hind Siliguri', sans-serif;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
-
+        
         body {
-            background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            font-family: 'Hind Siliguri', 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #120318 0%, #2a082e 35%, #4a0d34 70%, #1a001a 100%);
             overflow-x: hidden;
-            position: relative;
+            min-height: 100vh;
+            color: #ffffff;
         }
 
-        /* Floating Hearts Background */
-        .heart-bg {
+        /* Glassmorphism Card Style */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 182, 193, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .glass-card-glow {
+            background: rgba(255, 75, 114, 0.12);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 105, 180, 0.35);
+            box-shadow: 0 0 25px rgba(255, 75, 114, 0.3);
+        }
+
+        /* Dynamic Canvas Layer */
+        #interactive-canvas {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            overflow: hidden;
-            z-index: 1;
             pointer-events: none;
+            z-index: 20;
         }
 
-        .heart-bg i {
-            position: absolute;
-            color: rgba(255, 255, 255, 0.7);
-            animation: animate 8s linear infinite;
-            bottom: -100px;
+        #bg-3d-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.6;
         }
 
-        @keyframes animate {
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(20, 0, 20, 0.5);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 75, 114, 0.5);
+            border-radius: 10px;
+        }
+
+        /* Floating Name Bubbles Styling */
+        .floating-bubble {
+            position: fixed;
+            pointer-events: none;
+            z-index: 15;
+            border-radius: 50px;
+            padding: 8px 18px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 0 15px rgba(255, 105, 180, 0.5);
+            color: #fff;
+            font-weight: 600;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            animation: floatUp linear forwards;
+        }
+
+        @keyframes floatUp {
             0% {
-                transform: translateY(0) rotate(0deg) scale(0.8);
-                opacity: 1;
+                transform: translateY(105vh) scale(0.6) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.95;
+            }
+            90% {
+                opacity: 0.85;
             }
             100% {
-                transform: translateY(-105vh) rotate(360deg) scale(1.2);
+                transform: translateY(-15vh) scale(1.1) rotate(12deg);
                 opacity: 0;
             }
         }
 
-        /* Sound Button */
-        .sound-btn {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.9);
-            color: #ff3366;
-            border: none;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            font-size: 20px;
-            cursor: pointer;
-            z-index: 100;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: all 0.3s ease;
+        /* Glow Text Effect */
+        .neon-text-pink {
+            text-shadow: 0 0 10px rgba(255, 75, 114, 0.8), 0 0 20px rgba(255, 75, 114, 0.5), 0 0 30px rgba(255, 20, 147, 0.3);
+        }
+        .neon-text-gold {
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8), 0 0 20px rgba(255, 215, 0, 0.4);
         }
 
-        .sound-btn:hover {
-            transform: scale(1.1);
+        /* Animated gradient text */
+        .gradient-text {
+            background: linear-gradient(45deg, #ff758c, #ff7eb3, #ffd700, #ff4b72);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 6s ease infinite;
         }
 
-        /* Main Glassmorphism Card */
-        .card {
-            background: rgba(255, 255, 255, 0.88);
-            backdrop-filter: blur(12px);
-            padding: 35px 25px;
-            border-radius: 30px;
-            box-shadow: 0 20px 40px rgba(255, 51, 102, 0.25);
-            text-align: center;
-            max-width: 450px;
-            width: 90%;
-            z-index: 10;
-            border: 2px solid rgba(255, 255, 255, 0.6);
-            animation: fadeIn 1.2s ease-in-out;
-            margin: 20px 0;
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Heart Beats Animation */
+        .heart-beat {
+            animation: heartBeat 1.3s infinite ease-in-out;
         }
 
-        .main-heart {
-            font-size: 75px;
-            color: #ff3366;
-            animation: pulse 1.2s infinite;
-            margin-bottom: 10px;
-            display: inline-block;
-            filter: drop-shadow(0 5px 10px rgba(255, 51, 102, 0.4));
-        }
-
-        @keyframes pulse {
+        @keyframes heartBeat {
             0% { transform: scale(1); }
-            50% { transform: scale(1.18); }
-            100% { transform: scale(1); }
-        }
-
-        .name-tag {
-            font-family: 'Dancing Script', cursive;
-            font-size: 38px;
-            color: #ff2a5f;
-            margin-bottom: 5px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-        }
-
-        h2 {
-            color: #4a4a4a;
-            font-size: 20px;
-            margin-bottom: 15px;
-            font-weight: 600;
-        }
-
-        p.typing-text {
-            color: #555;
-            font-size: 17px;
-            line-height: 1.6;
-            min-height: 85px;
-            margin-bottom: 25px;
-        }
-
-        /* Interactive Buttons */
-        .btn-group {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            position: relative;
-            min-height: 55px;
-            align-items: center;
-        }
-
-        .btn {
-            padding: 12px 32px;
-            font-size: 18px;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-        }
-
-        .btn-yes {
-            background: linear-gradient(45deg, #ff3366, #ff6b81);
-            color: white;
-        }
-
-        .btn-yes:hover {
-            transform: scale(1.1);
-            box-shadow: 0 10px 25px rgba(255, 51, 102, 0.5);
-        }
-
-        .btn-no {
-            background: #e0e0e0;
-            color: #555;
-            position: absolute;
-            transition: all 0.2s ease;
-        }
-
-        /* Success Modal Popup */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.65);
-            backdrop-filter: blur(6px);
-            justify-content: center;
-            align-items: center;
-            z-index: 100;
-        }
-
-        .modal-content {
-            background: white;
-            padding: 35px 25px;
-            border-radius: 25px;
-            text-align: center;
-            max-width: 400px;
-            width: 85%;
-            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
-        }
-
-        @keyframes popIn {
-            0% { transform: scale(0); }
-            100% { transform: scale(1); }
-        }
-
-        .modal-content h2 {
-            color: #ff3366;
-            margin-bottom: 12px;
-            font-size: 24px;
-        }
-
-        .modal-content p {
-            color: #555;
-            font-size: 17px;
-            margin-bottom: 20px;
-            line-height: 1.5;
-        }
-
-        .celebrate-icon {
-            font-size: 65px;
-            color: #ff3366;
-            margin-bottom: 15px;
-            animation: bounce 1s infinite alternate;
-        }
-
-        @keyframes bounce {
-            from { transform: translateY(0); }
-            to { transform: translateY(-10px); }
+            14% { transform: scale(1.15); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.15); }
+            70% { transform: scale(1); }
         }
     </style>
 </head>
-<body>
+<body class="relative flex flex-col justify-between min-h-screen select-none overflow-x-hidden">
 
-    <!-- Local Uploaded Audio File Name -->
-    <audio id="loveAudio" preload="auto">
-        <source src="(128k).mp3" type="audio/mpeg">
-    </audio>
+    <!-- 3D Three.js Background Canvas -->
+    <div id="bg-3d-canvas"></div>
 
-    <!-- Sound Play Button -->
-    <button class="sound-btn" onclick="playLoveSound()" title="Play Sound">
-        <i class="fa-solid fa-volume-high"></i>
-    </button>
+    <!-- Interactive Particle Overlay Canvas (Touches & Clicks Explosions) -->
+    <canvas id="interactive-canvas"></canvas>
 
-    <!-- Floating Hearts Background -->
-    <div class="heart-bg" id="heartContainer"></div>
-
-    <!-- Main Card -->
-    <div class="card">
-        <i class="fa-solid fa-heart main-heart"></i>
-        <div class="name-tag">Inan Sikandar ❤️</div>
-        <h2>আমার জীবনের সবচেয়ে সুন্দর মানুষটি...</h2>
-        
-        <p class="typing-text" id="typewriter"></p>
-        
-        <div class="btn-group">
-            <button class="btn btn-yes" onclick="showLove()">হ্যাঁ ❤️</button>
-            <button class="btn btn-no" id="noBtn" onmouseover="moveButton()" onclick="moveButton()">না 🙈</button>
+    <!-- Top Header Banner - Designed by Shahanur Khan Abir -->
+    <header class="relative z-30 w-full pt-4 pb-2 px-4 text-center">
+        <div class="inline-flex items-center gap-2 px-5 py-2 rounded-full glass-card border border-pink-500/30 shadow-lg hover:scale-105 transition-transform duration-300">
+            <i class="fa-solid fa-code text-pink-400 text-sm"></i>
+            <span class="text-xs md:text-sm font-bangla font-medium tracking-wide text-pink-200">
+                ডিজাইন বাই <span class="font-bold text-yellow-300 underline decoration-pink-500 decoration-2">শাহানুর খান আবীর</span>
+            </span>
+            <i class="fa-solid fa-heart text-red-500 text-xs animate-ping"></i>
         </div>
-    </div>
+    </header>
 
-    <!-- Success Modal -->
-    <div class="modal" id="loveModal">
-        <div class="modal-content">
-            <i class="fa-solid fa-heart-circle-check celebrate-icon"></i>
-            <h2>I Love You, Inan! 🥰</h2>
-            <p>আমি জানতাম তুমি 'হ্যাঁ' বলবে! তুমি আমার জীবনের সবচেয়ে মিষ্টি আর সুন্দর উপহার। আজ থেকে আমাদের পথচলা শুরু! 💖✨</p>
-            <button class="btn btn-yes" style="padding: 8px 25px; font-size: 16px;" onclick="closeModal()">ধন্যবাদ ❤️</button>
-        </div>
-    </div>
-
-    <script>
-        // Floating Hearts Background Generator
-        function createHearts() {
-            const container = document.getElementById('heartContainer');
-            for (let i = 0; i < 30; i++) {
-                const heart = document.createElement('i');
-                heart.classList.add('fa-solid', 'fa-heart');
-                heart.style.left = Math.random() * 100 + 'vw';
-                heart.style.animationDuration = Math.random() * 4 + 4 + 's';
-                heart.style.fontSize = Math.random() * 22 + 12 + 'px';
-                container.appendChild(heart);
-            }
-        }
-        createHearts();
-
-        // Personalized Typewriter Effect
-        const message = "Inan, তুমি কি আমার হাসির কারণ হবে? তোমার হাতটা ধরে জীবনের বাকি পথগুলো ভালোবাসায় সাজিয়ে তুলতে চাই। Will you be mine forever?";
-        let index = 0;
-        function typeWriter() {
-            if (index < message.length) {
-                document.getElementById("typewriter").innerHTML += message.charAt(index);
-                index++;
-                setTimeout(typeWriter, 55);
-            }
-        }
-        window.onload = typeWriter;
-
-        // Play Clean Audio Sound
-        function playLoveSound() {
-            const audio = document.getElementById("loveAudio");
-            audio.currentTime = 0;
-            audio.play().catch(error => console.log("Audio playback error:", error));
-        }
-
-        // Move "No" Button Away
-        function moveButton() {
-            const noBtn = document.getElementById('noBtn');
-            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 80);
-            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - 80);
+    <!-- Main Content Container -->
+    <main class="relative z-30 flex-grow container mx-auto px-4 py-4 flex flex-col items-center justify-center max-w-4xl">
+        
+        <!-- Main Emotional Title Header -->
+        <div class="text-center mb-6 w-full animate-float-gentle">
+            <div class="inline-block mb-2">
+                <span class="px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-widest bg-pink-500/20 text-pink-300 border border-pink-400/30">
+                    <i class="fa-solid fa-sparkles text-yellow-300 mr-1"></i> Eternal Feelings
+                </span>
+            </div>
             
-            noBtn.style.position = 'fixed';
-            noBtn.style.left = Math.max(20, x) + 'px';
-            noBtn.style.top = Math.max(20, y) + 'px';
+            <h1 class="text-3xl sm:text-5xl md:text-6xl font-extrabold font-bangla tracking-tight my-2 neon-text-pink leading-tight">
+                ইনান সিকান্দার <span class="inline-block heart-beat text-red-500">❤️</span>
+            </h1>
+            
+            <p class="text-base sm:text-xl font-bangla text-pink-200/90 font-light max-w-xl mx-auto neon-text-gold">
+                তোমাকে খুব মিস করছি... আমার প্রতিটি নিঃশ্বাসে শুধু তুমি!
+            </p>
+        </div>
+
+        <!-- Dynamic Emotional Message Carousel Card -->
+        <div class="w-full max-w-2xl glass-card-glow rounded-3xl p-6 md:p-8 mb-6 relative overflow-hidden text-center transition-all duration-500">
+            <div class="absolute -top-10 -left-10 w-32 h-32 bg-pink-500/20 rounded-full blur-2xl"></div>
+            <div class="absolute -bottom-10 -right-10 w-32 h-32 bg-purple-500/20 rounded-full blur-2xl"></div>
+
+            <div class="flex justify-center items-center gap-2 text-pink-300 text-sm font-semibold mb-3">
+                <i class="fa-solid fa-quote-left text-pink-400"></i>
+                <span class="font-bangla tracking-wider">মনের গভীরের অনুভূতি</span>
+                <i class="fa-solid fa-quote-right text-pink-400"></i>
+            </div>
+
+            <!-- Bangla Caption Box -->
+            <div class="min-h-[110px] flex items-center justify-center py-2 px-2">
+                <p id="caption-display" class="text-lg sm:text-2xl font-bangla text-white font-medium leading-relaxed gradient-text transition-opacity duration-500">
+                    "ইনান সিকান্দার, তোমার ভালোবাসায় হারিয়ে যেতে মন চায় প্রতিদিন, প্রতি মুহূর্তে..."
+                </p>
+            </div>
+
+            <!-- Carousel Controls & Heart Interactive Buttons -->
+            <div class="flex flex-wrap items-center justify-center gap-3 mt-4 pt-4 border-t border-white/10">
+                <button id="prev-btn" class="px-4 py-2 rounded-xl glass-card hover:bg-pink-600/30 text-white text-sm font-bangla transition-all active:scale-95 flex items-center gap-2">
+                    <i class="fa-solid fa-chevron-left text-xs"></i> পূর্ববর্তী
+                </button>
+
+                <button id="love-shower-btn" class="px-6 py-2.5 rounded-full bg-gradient-to-r from-pink-500 via-rose-500 to-red-600 text-white font-bangla font-semibold shadow-lg shadow-pink-500/40 hover:shadow-pink-500/70 hover:scale-105 active:scale-95 transition-all flex items-center gap-2 border border-pink-300/40">
+                    <i class="fa-solid fa-heart text-yellow-300 heart-beat"></i> 
+                    <span>ইনানকে ভালোবাসা পাঠাও</span>
+                    <i class="fa-solid fa-wand-magic-sparkles text-yellow-300"></i>
+                </button>
+
+                <button id="next-btn" class="px-4 py-2 rounded-xl glass-card hover:bg-pink-600/30 text-white text-sm font-bangla transition-all active:scale-95 flex items-center gap-2">
+                    পরবর্তী <i class="fa-solid fa-chevron-right text-xs"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Interactive Love Counter & Audio Controller Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-2xl mb-6">
+            
+            <!-- Send Love Counter Card -->
+            <div class="glass-card rounded-2xl p-4 flex items-center justify-between border border-pink-500/20">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-pink-500 to-red-600 flex items-center justify-center text-white text-xl shadow-md">
+                        <i class="fa-solid fa-hand-holding-heart"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs text-pink-300 font-bangla">মোট পাঠানো ভালোবাসা</div>
+                        <div id="love-counter" class="text-2xl font-bold font-poppins text-yellow-300">1,008</div>
+                    </div>
+                </div>
+                <button id="quick-heart-btn" class="w-10 h-10 rounded-full glass-card flex items-center justify-center text-pink-400 hover:text-white hover:bg-pink-500 transition-all active:scale-90">
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+            </div>
+
+            <!-- Soft Music Synthesizer Toggle Card -->
+            <div class="glass-card rounded-2xl p-4 flex items-center justify-between border border-pink-500/20">
+                <div class="flex items-center gap-3">
+                    <div id="music-icon-bg" class="w-12 h-12 rounded-2xl bg-purple-900/60 border border-purple-400/30 flex items-center justify-center text-purple-300 text-xl transition-all">
+                        <i id="music-icon" class="fa-solid fa-music"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs text-pink-300 font-bangla">রোমান্টিক আবহ সুর</div>
+                        <div id="music-status" class="text-sm font-semibold font-bangla text-gray-300">বন্ধ আছে</div>
+                    </div>
+                </div>
+                <button id="music-toggle-btn" class="px-4 py-2 rounded-xl bg-pink-500/20 hover:bg-pink-500/40 border border-pink-400/40 text-pink-200 text-xs font-bangla font-semibold transition-all active:scale-95">
+                    চালু করুন
+                </button>
+            </div>
+
+        </div>
+
+        <!-- Custom Love Note / Memory Express Box -->
+        <div class="w-full max-w-2xl glass-card rounded-2xl p-5 border border-pink-500/20">
+            <h3 class="text-base font-bangla font-semibold text-pink-200 mb-2 flex items-center gap-2">
+                <i class="fa-solid fa-envelope-open-text text-yellow-400"></i>
+                ইনান সিকান্দার এর জন্য আপনার অনুভূতির বার্তা লিখুন:
+            </h3>
+            <div class="flex gap-2">
+                <input type="text" id="custom-msg-input" placeholder="এখানে লিখুন... (যেমন: ইনান, তোমাকে খুব দেখতে ইচ্ছে করছে)" 
+                       class="flex-grow bg-black/40 border border-pink-500/30 rounded-xl px-4 py-2 text-sm text-white placeholder-gray-400 focus:outline-none focus:border-pink-400 font-bangla">
+                <button id="add-msg-btn" class="px-4 py-2 rounded-xl bg-pink-600 hover:bg-pink-500 text-white font-bangla text-sm font-medium transition-all active:scale-95 whitespace-nowrap flex items-center gap-1">
+                    <i class="fa-solid fa-paper-plane text-xs"></i> যোগ করুন
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer with Shahanur Khan Abir Credits -->
+    <footer class="relative z-30 w-full py-4 px-4 text-center glass-card mt-6 border-t border-pink-500/20">
+        <div class="container mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-pink-200/80 font-bangla">
+            <div class="flex items-center gap-2">
+                <span>© ২০২৬ ইনান সিকান্দার লাভ পোর্টাল</span>
+                <span class="text-pink-500">•</span>
+                <span>ভালোবাসার চিরন্তন বন্ধন</span>
+            </div>
+            <div class="bg-black/30 px-4 py-1.5 rounded-full border border-pink-500/30 text-yellow-300 font-medium">
+                ডিজাইন বাই <span class="font-bold text-pink-400 underline decoration-yellow-400">শাহানur খান আবীর</span> (Shahanur Khan Abir)
+            </div>
+        </div>
+    </footer>
+
+    <!-- Audio & Interactive Scripts -->
+    <script>
+        // Array of Deep Emotional Bangla Captions for Inan Sikandar
+        const banglaCaptions = [
+            "ইনান সিকান্দার, তোমাকে খুব মিস করছি... তোমাকে ছাড়া প্রতিটি মুহূর্ত একা একা লাগে!",
+            "তোমার ভালোবাসায় হারিয়ে যেতে মন চায় প্রতিদিন, প্রতিটা ক্ষণে...",
+            "ইনান, তুমি আমার জীবনের এমন এক অধ্যায় যা আমি বারবার পড়তে চাই।",
+            "তুমি দূরে থাকলেও আমার প্রতিটি হৃদস্পন্দনে শুধু তোমারই নাম বাজে!",
+            "ইনান সিকান্দার, তোমার একটা মিষ্টি হাসি দেখার জন্য আমার মনটা চাতক পাখির মতো বসে থাকে।",
+            "পৃথিবীর সব ভালোবাসা একত্র করলেও ইনান, তোমার প্রতি আমার প্রেমের সমান হবে না।",
+            "তোমাকে না দেখলে এই মন কোনো কিছুতেই শান্তি পায় না... খুব মিস করি তোমাকে!",
+            "ইনান, আমার স্বপ্নের প্রতিটা রঙিন ক্যানভাসে শুধু তোমারই ছবি আঁকা।",
+            "তুমি আমার প্রথম ভালোবাসা, তুমিই আমার শেষ ঠিকানা ইনান সিকান্দার ❤️",
+            "চোখ বুজলেই তোমাকে দেখতে পাই, আর চোখ খুললেই তোমাকে মিস করি..."
+        ];
+
+        let currentCaptionIndex = 0;
+        let loveCount = 1008;
+
+        // Dynamic Elements Reference
+        const captionDisplay = document.getElementById('caption-display');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const loveShowerBtn = document.getElementById('love-shower-btn');
+        const loveCounter = document.getElementById('love-counter');
+        const quickHeartBtn = document.getElementById('quick-heart-btn');
+        const customMsgInput = document.getElementById('custom-msg-input');
+        const addMsgBtn = document.getElementById('add-msg-btn');
+
+        // Update Caption Function
+        function updateCaption(index) {
+            captionDisplay.style.opacity = '0';
+            setTimeout(() => {
+                captionDisplay.innerText = `"${banglaCaptions[index]}"`;
+                captionDisplay.style.opacity = '1';
+            }, 300);
         }
 
-        // Show Modal and Play Sound on "Yes"
-        function showLove() {
-            document.getElementById('loveModal').style.display = 'flex';
-            playLoveSound();
+        prevBtn.addEventListener('click', () => {
+            currentCaptionIndex = (currentCaptionIndex - 1 + banglaCaptions.length) % banglaCaptions.length;
+            updateCaption(currentCaptionIndex);
+            triggerTouchHearts(window.innerWidth / 2, window.innerHeight / 2, 5);
+        });
+
+        nextBtn.addEventListener('click', () => {
+            currentCaptionIndex = (currentCaptionIndex + 1) % banglaCaptions.length;
+            updateCaption(currentCaptionIndex);
+            triggerTouchHearts(window.innerWidth / 2, window.innerHeight / 2, 5);
+        });
+
+        // Add Custom Bangla Caption
+        addMsgBtn.addEventListener('click', () => {
+            const txt = customMsgInput.value.trim();
+            if(txt.length > 0) {
+                banglaCaptions.push(txt);
+                currentCaptionIndex = banglaCaptions.length - 1;
+                updateCaption(currentCaptionIndex);
+                customMsgInput.value = '';
+                triggerTouchHearts(window.innerWidth / 2, window.innerHeight / 2, 15);
+            }
+        });
+
+        // Love Counter Handler
+        function incrementLove(amount = 1) {
+            loveCount += amount;
+            loveCounter.innerText = loveCount.toLocaleString();
         }
 
-        function closeModal() {
-            document.getElementById('loveModal').style.display = 'none';
+        quickHeartBtn.addEventListener('click', (e) => {
+            incrementLove(1);
+            triggerTouchHearts(e.clientX, e.clientY, 8);
+        });
+
+        loveShowerBtn.addEventListener('click', (e) => {
+            incrementLove(10);
+            const rect = loveShowerBtn.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            triggerTouchHearts(centerX, centerY, 30);
+            spawnFloatingBubble("ইনান সিকান্দার ❤️");
+            spawnFloatingBubble("Love You Inan!");
+        });
+
+        // Auto Cycle Captions Every 8 Seconds
+        setInterval(() => {
+            currentCaptionIndex = (currentCaptionIndex + 1) % banglaCaptions.length;
+            updateCaption(currentCaptionIndex);
+        }, 8000);
+
+        // ==========================================
+        // Floating Bubble System ("Inan Sikandar")
+        // ==========================================
+        const bubbleTexts = [
+            "ইনান সিকান্দার ❤️",
+            "Inan Sikandar 💕",
+            "আই লাভ ইউ ইনান 💖",
+            "Miss You Inan 🥺",
+            "ইনান আমার প্রাণ 💗",
+            "Forever Inan 🔐",
+            "ইনান ❤️ শাহানুর",
+            "আমার ইনান 🌸"
+        ];
+
+        function spawnFloatingBubble(customText = null) {
+            const bubble = document.createElement('div');
+            bubble.className = 'floating-bubble';
+            
+            const randomText = customText || bubbleTexts[Math.floor(Math.random() * bubbleTexts.length)];
+            const randomX = Math.random() * (window.innerWidth - 120);
+            const duration = 6 + Math.random() * 6; // 6 to 12s
+
+            bubble.style.left = `${Math.max(10, randomX)}px`;
+            bubble.style.animationDuration = `${duration}s`;
+            
+            // Random Color Tints
+            const colors = [
+                'rgba(255, 75, 114, 0.25)', 
+                'rgba(255, 105, 180, 0.25)', 
+                'rgba(186, 85, 211, 0.25)', 
+                'rgba(255, 215, 0, 0.2)'
+            ];
+            const randomBg = colors[Math.floor(Math.random() * colors.length)];
+            bubble.style.background = randomBg;
+
+            bubble.innerHTML = `<i class="fa-solid fa-heart text-pink-400 text-xs"></i><span>${randomText}</span>`;
+            document.body.appendChild(bubble);
+
+            setTimeout(() => {
+                bubble.remove();
+            }, duration * 1000);
         }
+
+        // Spawn bubbles periodically
+        setInterval(() => {
+            spawnFloatingBubble();
+        }, 2200);
+
+        // ==========================================
+        // 2D Interactive Touch/Click Particle Canvas
+        // ==========================================
+        const canvas = document.getElementById('interactive-canvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        let particles = [];
+
+        class LoveParticle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.size = Math.random() * 18 + 10;
+                this.speedX = (Math.random() - 0.5) * 5;
+                this.speedY = (Math.random() - 0.7) * 6 - 1;
+                this.opacity = 1;
+                this.rotation = Math.random() * Math.PI * 2;
+                this.rotationSpeed = (Math.random() - 0.5) * 0.1;
+                this.color = `hsl(${Math.random() * 40 + 330}, 100%, 65%)`;
+                this.symbol = Math.random() > 0.3 ? '❤️' : (Math.random() > 0.5 ? '💖' : '✨');
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.opacity -= 0.015;
+                this.size *= 0.98;
+                this.rotation += this.rotationSpeed;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rotation);
+                ctx.globalAlpha = Math.max(0, this.opacity);
+                ctx.font = `${this.size}px Arial`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(this.symbol, 0, 0);
+                ctx.restore();
+            }
+        }
+
+        function triggerTouchHearts(x, y, count = 12) {
+            for (let i = 0; i < count; i++) {
+                particles.push(new LoveParticle(x, y));
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+                if (particles[i].opacity <= 0 || particles[i].size <= 2) {
+                    particles.splice(i, 1);
+                    i--;
+                }
+            }
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        // Listen for user touch & click across screen
+        window.addEventListener('pointerdown', (e) => {
+            triggerTouchHearts(e.clientX, e.clientY, 10);
+        });
+
+        // ==========================================
+        // Three.js 3D Floating Hearts & Ambient Scene
+        // ==========================================
+        let scene, camera, renderer, heartsMeshGroup;
+
+        function init3D() {
+            const container = document.getElementById('bg-3d-canvas');
+            scene = new THREE.Scene();
+
+            camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 30;
+
+            renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            container.appendChild(renderer.domElement);
+
+            // Create Heart Shape for 3D Extrusion
+            const heartShape = new THREE.Shape();
+            const x = 0, y = 0;
+            heartShape.moveTo(x + 0.5, y + 0.5);
+            heartShape.bezierCurveTo(x + 0.5, y + 0.5, x + 0.4, y, x, y);
+            heartShape.bezierCurveTo(x - 0.6, y, x - 0.6, y + 0.7, x - 0.6, y + 0.7);
+            heartShape.bezierCurveTo(x - 0.6, y + 1.1, x - 0.3, y + 1.54, x + 0.5, y + 1.9);
+            heartShape.bezierCurveTo(x + 1.3, y + 1.54, x + 1.6, y + 1.1, x + 1.6, y + 0.7);
+            heartShape.bezierCurveTo(x + 1.6, y + 0.7, x + 1.6, y, x + 1, y);
+            heartShape.bezierCurveTo(x + 0.7, y, x + 0.5, y + 0.5, x + 0.5, y + 0.5);
+
+            const extrudeSettings = {
+                depth: 0.4,
+                bevelEnabled: true,
+                bevelSegments: 3,
+                steps: 1,
+                bevelSize: 0.15,
+                bevelThickness: 0.15
+            };
+
+            const geometry = new THREE.ExtrudeGeometry(heartShape, extrudeSettings);
+            geometry.center();
+
+            heartsMeshGroup = new THREE.Group();
+
+            const materials = [
+                new THREE.MeshPhongMaterial({ color: 0xff2a5f, shininess: 100 }),
+                new THREE.MeshPhongMaterial({ color: 0xff69b4, shininess: 80 }),
+                new THREE.MeshPhongMaterial({ color: 0xff1493, shininess: 90 }),
+                new THREE.MeshPhongMaterial({ color: 0xffd700, shininess: 120 })
+            ];
+
+            // Generate 3D Hearts
+            for (let i = 0; i < 35; i++) {
+                const mat = materials[Math.floor(Math.random() * materials.length)];
+                const mesh = new THREE.Mesh(geometry, mat);
+
+                mesh.position.x = (Math.random() - 0.5) * 50;
+                mesh.position.y = (Math.random() - 0.5) * 40;
+                mesh.position.z = (Math.random() - 0.5) * 30;
+
+                const scale = Math.random() * 0.8 + 0.4;
+                mesh.scale.set(scale, scale, scale);
+
+                mesh.rotation.x = Math.random() * Math.PI;
+                mesh.rotation.y = Math.random() * Math.PI;
+
+                mesh.userData = {
+                    speedRotX: (Math.random() - 0.5) * 0.02,
+                    speedRotY: (Math.random() - 0.5) * 0.02,
+                    posYOriginal: mesh.position.y,
+                    floatSpeed: Math.random() * 0.015 + 0.005,
+                    floatOffset: Math.random() * Math.PI * 2
+                };
+
+                heartsMeshGroup.add(mesh);
+            }
+
+            scene.add(heartsMeshGroup);
+
+            // Ambient Light & Point Lights
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+            scene.add(ambientLight);
+
+            const dirLight = new THREE.DirectionalLight(0xffb6c1, 0.8);
+            dirLight.position.set(10, 20, 20);
+            scene.add(dirLight);
+
+            const pointLight = new THREE.PointLight(0xff1493, 1.5, 50);
+            pointLight.position.set(0, 0, 10);
+            scene.add(pointLight);
+
+            // Handle Resize
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        }
+
+        let time = 0;
+        function animate3D() {
+            requestAnimationFrame(animate3D);
+            time += 0.02;
+
+            if (heartsMeshGroup) {
+                heartsMeshGroup.children.forEach(mesh => {
+                    mesh.rotation.x += mesh.userData.speedRotX;
+                    mesh.rotation.y += mesh.userData.speedRotY;
+                    mesh.position.y = mesh.userData.posYOriginal + Math.sin(time + mesh.userData.floatOffset) * 2;
+                });
+                heartsMeshGroup.rotation.y = Math.sin(time * 0.2) * 0.1;
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        window.addEventListener('load', () => {
+            init3D();
+            animate3D();
+        });
+
+        // ==========================================
+        // Soft Romantic Ambient Music Synthesizer
+        // ==========================================
+        let audioCtx = null;
+        let isPlaying = false;
+        let melodyInterval = null;
+
+        const musicToggleBtn = document.getElementById('music-toggle-btn');
+        const musicStatus = document.getElementById('music-status');
+        const musicIcon = document.getElementById('music-icon');
+        const musicIconBg = document.getElementById('music-icon-bg');
+
+        const notes = [261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88, 523.25]; // C Major Romantic Scale
+
+        function playSoftNote(freq, duration = 1.5) {
+            if (!audioCtx) return;
+
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+            gain.gain.setValueAtTime(0, audioCtx.currentTime);
+            gain.gain.linearRampToValueAtTime(0.08, audioCtx.currentTime + 0.3);
+            gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            osc.start();
+            osc.stop(audioCtx.currentTime + duration);
+        }
+
+        function startMelody() {
+            let step = 0;
+            const melodySequence = [0, 2, 4, 7, 4, 2, 1, 3, 5, 7, 5, 3];
+            
+            melodyInterval = setInterval(() => {
+                if (!isPlaying) return;
+                const noteIndex = melodySequence[step % melodySequence.length];
+                playSoftNote(notes[noteIndex], 2.0);
+                
+                // Play harmony occasionally
+                if(step % 3 === 0) {
+                    playSoftNote(notes[(noteIndex + 2) % notes.length] * 0.5, 2.5);
+                }
+                step++;
+            }, 600);
+        }
+
+        musicToggleBtn.addEventListener('click', () => {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            isPlaying = !isPlaying;
+
+            if (isPlaying) {
+                musicStatus.innerText = "চলছে ♪";
+                musicStatus.classList.replace('text-gray-300', 'text-pink-300');
+                musicToggleBtn.innerText = "বন্ধ করুন";
+                musicToggleBtn.classList.replace('bg-pink-500/20', 'bg-red-500/40');
+                musicIconBg.classList.add('animate-pulse', 'border-pink-400');
+                startMelody();
+            } else {
+                musicStatus.innerText = "বন্ধ আছে";
+                musicStatus.classList.replace('text-pink-300', 'text-gray-300');
+                musicToggleBtn.innerText = "চালু করুন";
+                musicToggleBtn.classList.replace('bg-red-500/40', 'bg-pink-500/20');
+                musicIconBg.classList.remove('animate-pulse', 'border-pink-400');
+                clearInterval(melodyInterval);
+            }
+        });
     </script>
 </body>
 </html>
+```
